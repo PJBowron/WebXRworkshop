@@ -35,7 +35,7 @@
       const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
 
       // Add your code here matching the playground format
-      const createScene = function () {
+      const createScene = async function () {
         const scene = new BABYLON.Scene(engine);
 
         BABYLON.SceneLoader.ImportMeshAsync("", "https://assets.babylonjs.com/meshes/", "box.babylon");
@@ -44,8 +44,13 @@
         camera.attachControl(canvas, true);
         const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
 
-        const xr = scene.createDefaultXRExperienceAsync();
-        
+        const env = scene.createDefaultEnvironment();
+
+        // here we add XR support
+        const xr = await scene.createDefaultXRExperienceAsync({
+            floorMeshes: [env.ground],
+        });
+
         return scene;
       };
 
